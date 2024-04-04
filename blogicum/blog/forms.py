@@ -12,7 +12,6 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         exclude = ('author', 'created_at')
-        
 
 
 class CommentForm(forms.ModelForm):

@@ -2,7 +2,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from blog.models import Post, Category, User, Comment
 from django.utils import timezone
 from .forms import PostForm, CommentForm, UserForm
-from django.views.generic import (ListView,CreateView,UpdateView,DeleteView,DetailView)
+from django.views.generic import (ListView,
+                                  CreateView,
+                                  UpdateView,
+                                  DeleteView,
+                                  DetailView)
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.paginator import Paginator
 from django.urls import reverse_lazy, reverse
@@ -10,6 +14,7 @@ from django.db.models import Count
 
 
 NUMBER_POSTS = 10
+
 
 def profile(request, user_name):
     user = get_object_or_404(User, username=user_name)
@@ -28,6 +33,7 @@ def profile(request, user_name):
     }
     return render(request, 'blog/profile.html', context)
 
+
 class PostListView(ListView):
     model = Post
     template_name = 'blog/index.html'
@@ -40,7 +46,7 @@ class PostListView(ListView):
             is_published=True,
             category__is_published=True,
         )
-        .annotate(comment_count=Count('comments'))
+        .annotate(comment_count=Count('comments')),
     )
 
 
@@ -84,7 +90,7 @@ class PostDetailView(DetailView):
         context['form'] = CommentForm()
         context['comments'] = self.object.comments.select_related('author')
         return context
-    
+
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
@@ -109,7 +115,7 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
         if self.get_object().author != request.user:
             return redirect('blog:post_detail', pk=self.post_id)
         return super().dispatch(request, *args, **kwargs)
-    
+
 
 class CategoryPostsView(ListView):
     model = Post
