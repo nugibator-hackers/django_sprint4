@@ -46,7 +46,7 @@ class PostListView(ListView):
             is_published=True,
             category__is_published=True,
         )
-        .annotate(comment_count=Count('comments')),
+        .annotate(comment_count=Count('comments'))
     )
 
 
