@@ -36,6 +36,7 @@ def get_posts(posts=Post.objects, filters=True, annotations=True):
         ).order_by('-pub_date')
     return queryset
 
+
 class CommentMixin(LoginRequiredMixin, UserPassesTestMixin):
     model = Comment
     template_name = 'blog/comment.html'
@@ -51,6 +52,7 @@ class CommentMixin(LoginRequiredMixin, UserPassesTestMixin):
     def test_func(self):
         comment = self.get_object()
         return comment.author == self.request.user
+
 
 def profile(request, user_name):
     user = get_object_or_404(User, username=user_name)
@@ -126,6 +128,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 class PostDeleteView(LoginRequiredMixin, DeleteView):
     model = Post
     template_name = 'blog/create.html'
+
     def get_success_url(self):
         return reverse('blog:profile', args=[self.request.user.username])
 
@@ -198,4 +201,3 @@ class CommentDeleteView(CommentMixin, DeleteView):
 
 class CommentUpdateView(CommentMixin, UpdateView):
     form_class = CommentForm
-   

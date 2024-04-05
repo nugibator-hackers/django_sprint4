@@ -57,7 +57,6 @@ class Post(BaseModel):
         verbose_name = 'публикация'
         verbose_name_plural = 'Публикации'
         ordering = ('created_at',)
-    
 
 
 class Category(BaseModel):
